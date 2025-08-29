@@ -1,6 +1,7 @@
 package com.assignment.youverifytest.di
 
 import android.util.Log
+import com.assignment.openweatherapp.domain.repository.WeatherRepository
 import com.assignment.youverifytest.domain.httpClient
 import io.ktor.client.HttpClient
 import org.koin.core.context.startKoin
@@ -17,8 +18,13 @@ fun initKoin(){
 
 val networkModule = module {
     single { provideHttpClient() }
+    single { provideWeatherRepository(get()) }
 }
 
 fun provideHttpClient(): HttpClient {
     return httpClient
+}
+
+fun provideWeatherRepository(httpClient: HttpClient): WeatherRepository {
+    return WeatherRepository(httpClient)
 }

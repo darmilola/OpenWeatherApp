@@ -1,4 +1,4 @@
-package com.assignment.openweatherapp.presentation.viewmodel
+package com.assignment.openweatherapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

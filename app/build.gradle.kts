@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("plugin.serialization") version "2.0.0"
 }
 
 android {
@@ -57,11 +58,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Navigation
-    val voyagerVersion = "1.1.0-beta02"
-    implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
-    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-
     //Networking
     val ktorVersion = "2.3.12"
     implementation("io.ktor:ktor-client-android:$ktorVersion")
@@ -78,7 +74,6 @@ dependencies {
     val coroutinesVersion = "1.6.3"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
-    // Coroutines - Deferred adapter
     implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
 
 
@@ -88,4 +83,8 @@ dependencies {
 
     //Splash Screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //Navigation
+    implementation("androidx.navigation:navigation-compose:2.9.0")
+
 }
