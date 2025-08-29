@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_splash_logo">
+
+    <!-- scale X -->
+    <target
+        android:name="badge"
+        android:animation="@animator/logo_scale" />
+
+    <!-- scale Y (we target same badge path by name) -->
+    <target
+        android:name="badge"
+        android:animation="@animator/logo_scale_y" />
+
+    <!-- fade entire drawable by targeting root alpha via a fake target name 'root' -->
+    <!-- Note: older Android versions may not support targeting the whole vector root alpha; if that fails, target each path instead. -->
+    <target
+        android:name="page_left"
+        android:animation="@animator/logo_fade" />
+    <target
+        android:name="page_right"
+        android:animation="@animator/logo_fade" />
+    <target
+        android:name="spine"
+        android:animation="@animator/logo_fade" />
+</animated-vector>

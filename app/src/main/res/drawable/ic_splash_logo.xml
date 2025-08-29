@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- circular badge background -->
+    <path
+        android:name="badge"
+        android:fillColor="@color/splash_icon_bg"
+        android:pathData="M54,0a54,54 0 1,0 0.0001,0z" />
+
+    <!-- left book page -->
+    <group android:translateX="30" android:translateY="30">
+        <path
+            android:name="page_left"
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M6,6 h18 a2,2 0 0 1 2,2 v28 a2,2 0 0 1 -2,2 H6 a2,2 0 0 1 -2,-2 V8 a2,2 0 0 1 2,-2 z" />
+    </group>
+
+    <!-- right book page (slightly offset to look open) -->
+    <group android:translateX="54" android:translateY="30">
+        <path
+            android:name="page_right"
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M6,6 h18 a2,2 0 0 1 2,2 v28 a2,2 0 0 1 -2,2 H6 a2,2 0 0 1 -2,-2 V8 a2,2 0 0 1 2,-2 z" />
+    </group>
+
+    <!-- small spine line to suggest book center -->
+    <path
+        android:name="spine"
+        android:fillColor="#B3FFFFFF"
+        android:pathData="M54,38 v28 h2 v-28 z" />
+</vector>
