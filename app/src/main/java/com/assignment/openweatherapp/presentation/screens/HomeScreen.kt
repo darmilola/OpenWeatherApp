@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import com.assignment.openweatherapp.domain.models.CityWeatherResponse
 import com.assignment.openweatherapp.domain.models.WeatherUiState
 import com.assignment.openweatherapp.presentation.PlatformConstants
-import com.assignment.openweatherapp.presentation.Util
 import com.assignment.openweatherapp.presentation.component.LoadingDialog
 import com.assignment.openweatherapp.viewmodel.WeatherViewModel
 import kotlinx.coroutines.launch
