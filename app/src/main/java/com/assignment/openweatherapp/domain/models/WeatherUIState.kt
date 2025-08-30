@@ -1,10 +1,9 @@
 package com.assignment.openweatherapp.domain.models
 
-data class WeatherUiState(
-    val query: String = "",
-    val isLoading: Boolean = false,
-    val weather: CityWeatherResponse = CityWeatherResponse.EMPTY,
-    val errorMessage: String? = "",
-    val isSuccess: Boolean = false,
-    val isError: Boolean = false
-)
+
+sealed class WeatherUiState {
+    data object Loading : WeatherUiState()
+    data class Success(val data: CityWeatherResponse) : WeatherUiState()
+    data class Error(val message: String, val throwable: Throwable? = null) : WeatherUiState()
+    data object Empty : WeatherUiState()
+}

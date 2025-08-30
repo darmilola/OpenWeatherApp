@@ -55,22 +55,26 @@ class MainActivity : ComponentActivity(){
         enableEdgeToEdge()
         setContent {
             OpenWeatherAppTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     NavHost(
-                        navController = rememberNavController(),
+                        navController = navController,
                         startDestination = Screen.HomeScreen.route,
                         modifier = Modifier.padding(paddingValues = innerPadding),
 
                         builder = {
                             composable(Screen.HomeScreen.route) {
                                 HomeScreen(weatherViewModel = weatherViewModel, onNavigate = {
-
+                                    navViewModel.setResponse(it)
+                                    navController.navigate(Screen.DetailScreen.route)
                                 })
                             }
 
                             composable(Screen.DetailScreen.route) {
                                 val weatherResponse = navViewModel.weatherResponse.collectAsState().value
-                                DetailScreen(weatherResponse)
+                                DetailScreen(weatherResponse, onBackPressed = {
+                                    navController.navigate(Screen.HomeScreen.route)
+                                })
                             }
 
                         })

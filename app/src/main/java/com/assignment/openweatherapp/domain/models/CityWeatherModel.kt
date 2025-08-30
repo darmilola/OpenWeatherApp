@@ -20,19 +20,9 @@ data class Wind(
 
 @Serializable
 data class CityWeatherResponse(
-    val cod: Int,
-    val name: String,
-    val timezone: Int,
-    val weather: List<WeatherModel>,
-    val wind: Wind){
-    companion object {
-        val EMPTY = CityWeatherResponse(
-            cod = 404,
-            name = "",
-            weather = emptyList(),
-            timezone = -1,
-            wind = Wind()
-        )
-    }
-}
+    val cod: Int = 404,
+    val name: String = "",
+    val timezone: Int = -1,
+    val weather: List<WeatherModel> = emptyList(),
+    val wind: Wind = Wind())
 

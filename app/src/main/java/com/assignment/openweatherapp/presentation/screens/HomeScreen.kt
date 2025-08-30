@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,8 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.assignment.openweatherapp.domain.models.CityWeatherResponse
+import com.assignment.openweatherapp.domain.models.WeatherUiState
 import com.assignment.openweatherapp.presentation.PlatformConstants
-import com.assignment.openweatherapp.presentation.PresentationUtil
+import com.assignment.openweatherapp.presentation.Util
 import com.assignment.openweatherapp.presentation.component.LoadingDialog
 import com.assignment.openweatherapp.viewmodel.WeatherViewModel
 import kotlinx.coroutines.launch
@@ -40,7 +42,7 @@ fun HomeScreen(weatherViewModel: WeatherViewModel, onNavigate: (CityWeatherRespo
     var cityName by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    val weatherUIState = weatherViewModel.uiState.collectAsState()
+    val weatherUIState = weatherViewModel.uiState.observeAsState()
 
     Scaffold(
         topBar = {
@@ -55,29 +57,36 @@ fun HomeScreen(weatherViewModel: WeatherViewModel, onNavigate: (CityWeatherRespo
         },
         content = { paddingValues ->
 
-            if (weatherUIState.value.isLoading){
+            when (val value = weatherUIState.value?.getContentIfNotHandled()) {
+                is WeatherUiState.Loading -> {
                     Box(modifier = Modifier.fillMaxWidth(0.90f)) {
                         LoadingDialog("Fetching City Weather")
                     }
-            }
-
-            else if (weatherUIState.value.isSuccess && PresentationUtil.isValidCity(weatherUIState.value.weather)){
-                println(weatherUIState.value.weather)
-            }
-            else if (weatherUIState.value.isSuccess && !PresentationUtil.isValidCity(weatherUIState.value.weather)){
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = "City Not Valid",
-                        actionLabel = "Dismiss"
-                    )
                 }
-            }
-            else if (weatherUIState.value.isError) {
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = weatherUIState.value.errorMessage.toString(),
-                        actionLabel = "Dismiss"
-                    )
+                is WeatherUiState.Success -> {
+                    val weather = value.data
+                    onNavigate(weather)
+                }
+                is WeatherUiState.Error -> {
+                    val errorMessage = value.message
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = errorMessage,
+                            actionLabel = "Dismiss"
+                        )
+                    }
+                }
+                is WeatherUiState.Empty -> {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "Search For Your Favorite City Weather",
+                            actionLabel = "Dismiss"
+                        )
+                    }
+                   }
+
+                else -> {
+
                 }
             }
 
