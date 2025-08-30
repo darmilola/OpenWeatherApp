@@ -30,15 +30,16 @@ import com.assignment.openweatherapp.domain.models.CityWeatherResponse
 import com.assignment.openweatherapp.domain.models.WeatherUiState
 import com.assignment.openweatherapp.presentation.PlatformConstants
 import com.assignment.openweatherapp.presentation.component.LoadingDialog
+import com.assignment.openweatherapp.presentation.datastore.SettingsViewModel
 import com.assignment.openweatherapp.viewmodel.WeatherViewModel
 import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(weatherViewModel: WeatherViewModel, onNavigate: (CityWeatherResponse) -> Unit) {
+fun HomeScreen(settingsViewModel: SettingsViewModel, weatherViewModel: WeatherViewModel, onNavigate: (CityWeatherResponse) -> Unit) {
 
-    var cityName by remember { mutableStateOf("") }
+    val cityName by settingsViewModel.city.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val weatherUIState = weatherViewModel.uiState.observeAsState()
@@ -101,7 +102,7 @@ fun HomeScreen(weatherViewModel: WeatherViewModel, onNavigate: (CityWeatherRespo
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(
                         value = cityName,
-                        onValueChange = { cityName = it },
+                        onValueChange = { settingsViewModel.saveCity(it) },
                         label = { Text("Enter city name") },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()

@@ -1,4 +1,4 @@
-package com.assignment.youverifytest.domain
+package com.assignment.openweatherapp.domain
 
 import android.util.Log
 import io.ktor.client.HttpClient
