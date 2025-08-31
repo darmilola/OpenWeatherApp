@@ -39,7 +39,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(settingsViewModel: SettingsViewModel, weatherViewModel: WeatherViewModel, onNavigate: (CityWeatherResponse) -> Unit) {
 
-    val cityName by settingsViewModel.city.collectAsState()
+    val savedCityName = settingsViewModel.city.collectAsState()
+    val cityName = remember {  mutableStateOf(savedCityName.value) }
+    if (savedCityName.value.isNotBlank()){
+        cityName.value = savedCityName.value
+    }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val weatherUIState = weatherViewModel.uiState.observeAsState()
@@ -101,8 +105,10 @@ fun HomeScreen(settingsViewModel: SettingsViewModel, weatherViewModel: WeatherVi
 
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(
-                        value = cityName,
-                        onValueChange = { settingsViewModel.saveCity(it) },
+                        value = cityName.value,
+                        onValueChange = {
+                            cityName.value = it
+                        },
                         label = { Text("Enter city name") },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
@@ -110,11 +116,12 @@ fun HomeScreen(settingsViewModel: SettingsViewModel, weatherViewModel: WeatherVi
 
                     Button(
                         onClick = {
-                            if (cityName.isNotBlank()) {
-                                weatherViewModel.fetchWeather(city = cityName.trim(), apiKey = PlatformConstants.API_KEY)
+                            if (cityName.value.isNotBlank()) {
+                                settingsViewModel.saveCity(cityName.value)
+                                weatherViewModel.fetchWeather(city = cityName.value.trim(), apiKey = PlatformConstants.API_KEY)
                             }
                         },
-                        enabled = cityName.isNotBlank(),
+                        enabled = cityName.value.isNotBlank(),
                         modifier = Modifier.fillMaxWidth()
                     ) {
 
